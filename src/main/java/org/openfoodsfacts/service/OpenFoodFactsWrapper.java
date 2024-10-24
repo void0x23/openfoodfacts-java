@@ -1,6 +1,6 @@
-package pl.coderion.service;
+package org.openfoodsfacts.service;
 
-import pl.coderion.model.ProductResponse;
+import org.openfoodsfacts.model.ProductResponse;
 
 public interface OpenFoodFactsWrapper {
 

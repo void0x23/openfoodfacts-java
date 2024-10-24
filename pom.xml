@@ -2,24 +2,23 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
   <modelVersion>4.0.0</modelVersion>
-  <groupId>pl.coderion</groupId>
+  <groupId>org.openfoodsfacts</groupId>
   <artifactId>openfoodfacts-java-wrapper</artifactId>
-  <version>0.9.4-SNAPSHOT</version>
-  <packaging>${packaging}</packaging>
+  <version>2.0.0-SNAPSHOT</version>
 
   <parent>
-    <groupId>io.micronaut</groupId>
+    <groupId>io.micronaut.platform</groupId>
     <artifactId>micronaut-parent</artifactId>
-    <version>2.5.13</version>
+    <version>4.6.3</version>
   </parent>
 
   <properties>
     <packaging>jar</packaging>
-    <jdk.version>11</jdk.version>
-    <release.version>11</release.version>
-    <micronaut.version>2.5.13</micronaut.version>
-    <exec.mainClass>pl.coderion.Application</exec.mainClass>
+    <exec.mainClass>org.openfoodsfacts.Application</exec.mainClass>
     <micronaut.runtime>netty</micronaut.runtime>
+    <jdk.version>17</jdk.version>
+    <release.version>17</release.version>
+    <micronaut.version>4.6.3</micronaut.version>
   </properties>
 
   <licenses>
@@ -37,6 +36,12 @@
   </scm>
 
   <developers>
+    <developer>
+      <name>Adriano Pace</name>
+      <email>paceadrianolavoro@gmail.com</email>
+      <organization>openfoodsfacts</organization>
+      <organizationUrl>https://github.com/openfoodfacts</organizationUrl>
+    </developer>
     <developer>
       <name>Krzysztof Kozlowski</name>
       <email>krzysztof.kozlowski@coderion.pl</email>
@@ -66,61 +71,74 @@
   </repositories>
 
   <dependencies>
+
     <dependency>
       <groupId>io.micronaut</groupId>
       <artifactId>micronaut-inject</artifactId>
       <scope>compile</scope>
     </dependency>
+
     <dependency>
-      <groupId>io.micronaut</groupId>
+      <groupId>io.micronaut.validation</groupId>
       <artifactId>micronaut-validation</artifactId>
-      <scope>compile</scope>
+      <version>4.7.0</version>
+      <scope>runtime</scope>
     </dependency>
+
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
       <scope>test</scope>
     </dependency>
+
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
       <scope>test</scope>
     </dependency>
+
     <dependency>
       <groupId>io.micronaut.test</groupId>
       <artifactId>micronaut-test-junit5</artifactId>
       <scope>test</scope>
     </dependency>
+
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
       <scope>test</scope>
     </dependency>
+
     <dependency>
       <groupId>io.micronaut</groupId>
       <artifactId>micronaut-http-client</artifactId>
       <scope>compile</scope>
     </dependency>
+
     <dependency>
       <groupId>io.micronaut</groupId>
       <artifactId>micronaut-http-server-netty</artifactId>
       <scope>compile</scope>
     </dependency>
+
     <dependency>
       <groupId>io.micronaut</groupId>
       <artifactId>micronaut-runtime</artifactId>
       <scope>compile</scope>
     </dependency>
+
     <dependency>
       <groupId>javax.annotation</groupId>
       <artifactId>javax.annotation-api</artifactId>
       <scope>compile</scope>
     </dependency>
+
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
       <scope>runtime</scope>
     </dependency>
+
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
@@ -139,14 +157,13 @@
       <plugin>
         <groupId>io.micronaut.build</groupId>
         <artifactId>micronaut-maven-plugin</artifactId>
+        <version>${micronaut.version}</version>
       </plugin>
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
-          <!-- Uncomment to enable incremental compilation -->
-          <!-- <useIncrementalCompilation>false</useIncrementalCompilation> -->
 
           <annotationProcessorPaths combine.self="override">
             <path>
@@ -166,7 +183,7 @@
             </path>
           </annotationProcessorPaths>
           <compilerArgs>
-            <arg>-Amicronaut.processing.group=pl.coderion</arg>
+            <arg>-Amicronaut.processing.group=org.openfoodsfacts</arg>
             <arg>-Amicronaut.processing.module=openfoodfacts-java-wrapper</arg>
           </compilerArgs>
         </configuration>
@@ -175,12 +192,12 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-plugin-plugin</artifactId>
-        <version>3.4</version>
+        <version>3.15.0</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-gpg-plugin</artifactId>
-        <version>1.6</version>
+        <version>3.2.7</version>
         <executions>
           <execution>
             <id>sign-artifacts</id>
@@ -194,7 +211,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-release-plugin</artifactId>
-        <version>2.5.3</version>
+        <version>3.1.1</version>
         <configuration>
           <autoVersionSubmodules>true</autoVersionSubmodules>
           <useReleaseProfile>false</useReleaseProfile>
@@ -205,7 +222,7 @@
       <plugin>
         <groupId>org.sonatype.plugins</groupId>
         <artifactId>nexus-staging-maven-plugin</artifactId>
-        <version>1.6.8</version>
+        <version>1.6.10</version>
         <extensions>true</extensions>
         <configuration>
           <serverId>ossrh</serverId>

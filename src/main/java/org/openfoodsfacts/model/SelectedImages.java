@@ -1,4 +1,4 @@
-package pl.coderion.model;
+package org.openfoodsfacts.model;
 
 import lombok.Data;
 

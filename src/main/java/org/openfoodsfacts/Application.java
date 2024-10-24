@@ -1,4 +1,4 @@
-package pl.coderion;
+package org.openfoodsfacts;
 
 import io.micronaut.runtime.Micronaut;
 
