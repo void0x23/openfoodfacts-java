@@ -6,7 +6,7 @@ import io.micronaut.http.HttpRequest;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.client.HttpClient;
 import io.micronaut.http.client.annotation.Client;
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 import org.openfoodsfacts.model.ProductResponse;
 
 @Singleton

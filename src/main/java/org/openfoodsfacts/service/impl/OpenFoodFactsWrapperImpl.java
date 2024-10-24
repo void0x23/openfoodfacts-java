@@ -1,7 +1,7 @@
 package org.openfoodsfacts.service.impl;
 
 import io.micronaut.http.client.HttpClient;
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import org.openfoodsfacts.client.OpenFoodFactsApiReadClient;
 import org.openfoodsfacts.model.ProductResponse;
