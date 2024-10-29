@@ -1,5 +1,14 @@
 # Changelog
 
+## 2.0.0 (2024-)
+
+### Modified
+- Project updated to Java 17
+
+### Added
+- Added v2 read apis 
+
+
 ## 1.0.0 (2022-05-05)
 
 
