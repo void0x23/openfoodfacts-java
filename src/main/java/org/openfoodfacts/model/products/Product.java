@@ -1,10 +1,18 @@
-package org.openfoodfacts.model;
+package org.openfoodfacts.model.products;
 
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import lombok.Data;
+import org.openfoodfacts.model.packaging.LanguagesCodes;
+import org.openfoodfacts.model.packaging.Source;
+import org.openfoodfacts.model.image.Images;
+import org.openfoodfacts.model.image.SelectedImages;
+import org.openfoodfacts.model.ingredients.Ingredient;
+import org.openfoodfacts.model.nutrients.NutrientLevels;
+import org.openfoodfacts.model.nutrients.Nutriments;
+import org.openfoodfacts.model.packaging.Packaging;
 
 @Data
 public class Product {

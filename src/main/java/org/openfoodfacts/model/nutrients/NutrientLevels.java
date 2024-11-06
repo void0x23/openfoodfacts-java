@@ -1,4 +1,4 @@
-package org.openfoodfacts.model;
+package org.openfoodfacts.model.nutrients;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;

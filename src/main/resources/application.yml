@@ -8,8 +8,7 @@ micronaut:
 
 openfoodfacts:
   api:
-    url:
-      read: 'https://world.openfoodfacts.net/api/v2'
+    url: 'https://world.openfoodfacts.org'
 
 
 

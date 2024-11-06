@@ -1,6 +1,5 @@
 package org.openfoodfacts.client;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import io.micronaut.context.annotation.Value;
 import io.micronaut.http.HttpHeaders;
 import io.micronaut.http.HttpRequest;
@@ -10,46 +9,78 @@ import io.micronaut.http.client.annotation.Client;
 import jakarta.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import org.openfoodfacts.exception.OpenFoodsFactsException;
-import org.openfoodfacts.model.Product;
+import org.openfoodfacts.model.AbstractProductResponse;
+import org.openfoodfacts.model.KnowledgePanelsResponse;
 import org.openfoodfacts.model.ProductResponse;
 
-import java.util.Arrays;
+import java.util.Optional;
+
+import static org.openfoodfacts.constant.Constants.*;
 
 
 @Slf4j
 @Singleton
 public class OpenFoodFactsApiReadClient {
 
-  @Value("${openfoodfacts.api.url.read}")
-  protected String readApiUrl;
+/*  @Value("${openfoodfacts.url.api}")
+  private String apiReadUrl;*/
 
   private final HttpClient httpClient;
-
-  private static final String URL = "https://world.openfoodfacts.org/api/v2";
-  private static final String PRODUCT = "product";
 
   public OpenFoodFactsApiReadClient(@Client HttpClient httpClient) {
     this.httpClient = httpClient;
   }
 
-  public Product fetchProductByCode(String code) throws JsonProcessingException {
+  public ProductResponse fetchProductByCode(String code) {
 
-    if (code == null) {
-      throw new OpenFoodsFactsException("Barcode cannot be null");
-    }
+    String barcode = checkBarcode(code);
 
-    log.info("Request url {}", String.format("%s/%s/%s", URL, PRODUCT, code));
+    String url = String.format("%s/%s/%s.json", BASE_SEARCH_URL, PRODUCT, barcode);
+/*
+    String url = String.format("%s/%s/%s.json", apiReadUrl, PRODUCT, barcode);
+*/
+
+    log.info("url {}", url);
 
     HttpRequest<?> request =
-        HttpRequest.GET(String.format("%s/%s/%s.json", URL, PRODUCT, code))
+        HttpRequest.GET(url)
             .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON);
 
     ProductResponse response = httpClient.toBlocking().retrieve(request, ProductResponse.class);
 
-    Arrays.stream(response.getProduct().getPackagings()).forEach(x -> log.info("package {}", x));
-    log.info("packaging {}", response.getProduct().getPackagings().length);
+    checkResponseStatus(response);
 
-    return null;
+    return response;
   }
 
+  public KnowledgePanelsResponse getProductKnowledgePanelsByCode(String code) {
+
+    String barcode = checkBarcode(code);
+
+    String url = String.format("%s/%s/%s.json?fields=%s", BASE_SEARCH_URL, PRODUCT, barcode, KNOWLEDGE_PANELS);
+    HttpRequest<?> request =
+            HttpRequest.GET(url)
+                    .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON);
+
+    KnowledgePanelsResponse response = httpClient.toBlocking().retrieve(request, KnowledgePanelsResponse.class);
+
+    checkResponseStatus(response);
+
+    log.info(response.toString());
+
+    return response;
+  }
+
+
+  private <T extends AbstractProductResponse> void checkResponseStatus(T response) {
+    if (response.getStatus() == 0) {
+      throw new OpenFoodsFactsException(response.getStatusVerbose());
+    }
+  }
+
+
+  private String checkBarcode(String code) {
+    return Optional.ofNullable(code)
+            .orElseThrow(() -> new OpenFoodsFactsException("Barcode cannot be null"));
+  }
 }

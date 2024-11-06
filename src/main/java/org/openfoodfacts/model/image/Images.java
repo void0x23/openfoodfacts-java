@@ -1,4 +1,4 @@
-package org.openfoodfacts.model;
+package org.openfoodfacts.model.image;
 
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import java.util.LinkedHashMap;

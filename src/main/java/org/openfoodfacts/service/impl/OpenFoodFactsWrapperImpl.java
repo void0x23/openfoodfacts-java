@@ -5,7 +5,8 @@ import io.micronaut.http.client.HttpClient;
 import jakarta.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import org.openfoodfacts.client.OpenFoodFactsApiReadClient;
-import org.openfoodfacts.model.Product;
+import org.openfoodfacts.model.KnowledgePanelsResponse;
+import org.openfoodfacts.model.ProductResponse;
 import org.openfoodfacts.service.OpenFoodFactsWrapper;
 
 @Slf4j
@@ -19,8 +20,13 @@ public final class OpenFoodFactsWrapperImpl implements OpenFoodFactsWrapper {
   }
 
   @Override
-  public Product fetchProductByCode(String code) throws JsonProcessingException {
+  public ProductResponse fetchProductByCode(String code) {
     return client.fetchProductByCode(code);
+  }
+
+  @Override
+  public KnowledgePanelsResponse getProductKnowledgePanelsByCode(String code) {
+    return client.getProductKnowledgePanelsByCode(code);
   }
 
 }

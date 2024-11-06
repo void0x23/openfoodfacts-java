@@ -1,4 +1,4 @@
-package org.openfoodfacts.model;
+package org.openfoodfacts.model.image;
 
 import lombok.Data;
 import org.apache.commons.lang3.ObjectUtils;

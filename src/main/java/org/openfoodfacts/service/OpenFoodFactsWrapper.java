@@ -3,7 +3,8 @@ package org.openfoodfacts.service;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import org.openfoodfacts.model.Product;
+import org.openfoodfacts.model.KnowledgePanelsResponse;
+import org.openfoodfacts.model.ProductResponse;
 
 public interface OpenFoodFactsWrapper {
 
@@ -14,7 +15,8 @@ public interface OpenFoodFactsWrapper {
    * @param code product code
    * @return product
    */
-    Product fetchProductByCode(String code) throws JsonProcessingException;
+    ProductResponse fetchProductByCode(String code);
 
+    KnowledgePanelsResponse getProductKnowledgePanelsByCode(String code);
 }
 

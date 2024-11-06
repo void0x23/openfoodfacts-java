@@ -1,4 +1,4 @@
-package org.openfoodfacts.model;
+package org.openfoodfacts.model.packaging;
 
 import lombok.Data;
 
