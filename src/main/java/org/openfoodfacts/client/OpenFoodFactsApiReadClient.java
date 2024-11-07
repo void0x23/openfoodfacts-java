@@ -1,6 +1,5 @@
 package org.openfoodfacts.client;
 
-import io.micronaut.context.annotation.Value;
 import io.micronaut.http.HttpHeaders;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.MediaType;
@@ -31,7 +30,7 @@ public class OpenFoodFactsApiReadClient {
     this.httpClient = httpClient;
   }
 
-  public ProductResponse fetchProductByCode(String code) {
+  public ProductResponse fetchProductByBarcode(String code) {
 
     String barcode = checkBarcode(code);
 
@@ -39,8 +38,6 @@ public class OpenFoodFactsApiReadClient {
 /*
     String url = String.format("%s/%s/%s.json", apiReadUrl, PRODUCT, barcode);
 */
-
-    log.info("url {}", url);
 
     HttpRequest<?> request =
         HttpRequest.GET(url)
@@ -53,11 +50,12 @@ public class OpenFoodFactsApiReadClient {
     return response;
   }
 
-  public KnowledgePanelsResponse getProductKnowledgePanelsByCode(String code) {
+  public KnowledgePanelsResponse getProductKnowledgePanelsByBarcode(String code) {
 
     String barcode = checkBarcode(code);
 
     String url = String.format("%s/%s/%s.json?fields=%s", BASE_SEARCH_URL, PRODUCT, barcode, KNOWLEDGE_PANELS);
+
     HttpRequest<?> request =
             HttpRequest.GET(url)
                     .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON);
@@ -65,8 +63,6 @@ public class OpenFoodFactsApiReadClient {
     KnowledgePanelsResponse response = httpClient.toBlocking().retrieve(request, KnowledgePanelsResponse.class);
 
     checkResponseStatus(response);
-
-    log.info(response.toString());
 
     return response;
   }

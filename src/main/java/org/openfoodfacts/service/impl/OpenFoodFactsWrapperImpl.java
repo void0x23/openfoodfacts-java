@@ -1,6 +1,5 @@
 package org.openfoodfacts.service.impl;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import io.micronaut.http.client.HttpClient;
 import jakarta.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
@@ -20,13 +19,13 @@ public final class OpenFoodFactsWrapperImpl implements OpenFoodFactsWrapper {
   }
 
   @Override
-  public ProductResponse fetchProductByCode(String code) {
-    return client.fetchProductByCode(code);
+  public ProductResponse fetchProductByBarcode(String code) {
+    return client.fetchProductByBarcode(code);
   }
 
   @Override
-  public KnowledgePanelsResponse getProductKnowledgePanelsByCode(String code) {
-    return client.getProductKnowledgePanelsByCode(code);
+  public KnowledgePanelsResponse getProductKnowledgePanelsByBarcode(String code) {
+    return client.getProductKnowledgePanelsByBarcode(code);
   }
 
 }

@@ -32,7 +32,7 @@ class OpenfoodfactsJavaWrapperTest {
 
     @Test
     void testFetchProductByBarcodeOK() throws Exception {
-        ProductResponse productResponse = openFoodFactsWrapper.fetchProductByCode("3017620422003");
+        ProductResponse productResponse = openFoodFactsWrapper.fetchProductByBarcode("3017620422003");
 
         log.info("Response {}", productResponse);
         assertNotNull(productResponse);
@@ -42,28 +42,43 @@ class OpenfoodfactsJavaWrapperTest {
     void testFetchProductByBarcodeKO() throws Exception {
 
         OpenFoodsFactsException exception = assertThrows(OpenFoodsFactsException.class, () -> {
-            openFoodFactsWrapper.fetchProductByCode("nonExistingBarcode");
+            openFoodFactsWrapper.fetchProductByBarcode("nonExistingBarcode");
         });
 
         log.info("Exception message: {}", exception.getLocalizedMessage());
         assertEquals("no code or invalid code", exception.getLocalizedMessage());
     }
 
-/*    @Test
+    @Test
     void testGetProductKnowledgePanelsByBarcodeOK() {
-        KnowledgePanelsResponse knowledgePanelsByCode = openFoodFactsWrapper.getProductKnowledgePanelsByCode("3017620422003");
+        KnowledgePanelsResponse knowledgePanelsByCode = openFoodFactsWrapper.getProductKnowledgePanelsByBarcode("3017620422003");
 
-        log.info(knowledgePanelsByCode.getProduct().toString());
-    }*/
+        assertNotNull(knowledgePanelsByCode);
+        assertEquals("product found", knowledgePanelsByCode.getStatusVerbose());
 
-/*
+    }
+
+    @MockBean(OpenFoodFactsApiReadClient.class)
+    OpenFoodFactsApiReadClient mocktestGetProductKnowledgePanelsByBarcodeOK() throws IOException {
+        String responseBody = new String(Files.readAllBytes(Paths.get("src/test/resources/responses/getProductKnowledgePanelsByBarcodeOK.json")));
+
+        OpenFoodFactsApiReadClient client = Mockito.mock(OpenFoodFactsApiReadClient.class);
+
+        Mockito.when(client.getProductKnowledgePanelsByBarcode("3017620422003"))
+                .thenReturn(new ObjectMapper().readValue(responseBody, KnowledgePanelsResponse.class));
+
+        return client;
+    }
+
+
+
     @MockBean(OpenFoodFactsApiReadClient.class)
     OpenFoodFactsApiReadClient mocktestFetchProductByBarcodeKO() throws IOException {
         String responseBody = new String(Files.readAllBytes(Paths.get("src/test/resources/responses/fetchProductByBarcodeKO.json")));
 
         OpenFoodFactsApiReadClient client = Mockito.mock(OpenFoodFactsApiReadClient.class);
 
-        Mockito.when(client.fetchProductByCode("nonexistingbarcode"))
+        Mockito.when(client.fetchProductByBarcode("nonexistingbarcode"))
                 .thenReturn(new ObjectMapper().readValue(responseBody, ProductResponse.class));
 
         return client;
@@ -75,12 +90,11 @@ class OpenfoodfactsJavaWrapperTest {
 
         OpenFoodFactsApiReadClient client = Mockito.mock(OpenFoodFactsApiReadClient.class);
 
-        Mockito.when(client.fetchProductByCode("3017620422003"))
+        Mockito.when(client.fetchProductByBarcode("3017620422003"))
                 .thenReturn(new ObjectMapper().readValue(responseBody, ProductResponse.class));
 
         return client;
     }
 
-*/
 
 }
