@@ -1,82 +1,74 @@
 package org.openfoodfacts.client;
 
-import io.micronaut.http.HttpHeaders;
-import io.micronaut.http.HttpRequest;
-import io.micronaut.http.MediaType;
-import io.micronaut.http.client.HttpClient;
-import io.micronaut.http.client.annotation.Client;
-import jakarta.inject.Singleton;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.openfoodfacts.exception.OpenFoodsFactsException;
-import org.openfoodfacts.model.AbstractProductResponse;
+import org.openfoodfacts.config.ConfigurationManager;
 import org.openfoodfacts.model.KnowledgePanelsResponse;
 import org.openfoodfacts.model.ProductResponse;
 
-import java.util.Optional;
+import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 
-import static org.openfoodfacts.constant.Constants.*;
-
+import static org.openfoodfacts.utils.ApiReadClientUtil.checkBarcode;
+import static org.openfoodfacts.utils.ApiReadClientUtil.checkResponseStatus;
 
 @Slf4j
-@Singleton
 public class OpenFoodFactsApiReadClient {
 
-/*  @Value("${openfoodfacts.url.api}")
-  private String apiReadUrl;*/
-
   private final HttpClient httpClient;
+  private ConfigurationManager configurationManager;
 
-  public OpenFoodFactsApiReadClient(@Client HttpClient httpClient) {
-    this.httpClient = httpClient;
+  public OpenFoodFactsApiReadClient() throws IOException {
+    this.httpClient = HttpClient.newHttpClient();
+    this.configurationManager = new ConfigurationManager();
   }
 
-  public ProductResponse fetchProductByBarcode(String code) {
+  public ProductResponse fetchProductByBarcode(String code) throws IOException, InterruptedException {
 
     String barcode = checkBarcode(code);
 
-    String url = String.format("%s/%s/%s.json", BASE_SEARCH_URL, PRODUCT, barcode);
-/*
-    String url = String.format("%s/%s/%s.json", apiReadUrl, PRODUCT, barcode);
-*/
+    String url = String.format("%s/%s/%s.json", configurationManager.getBaseSearchUrl(), configurationManager.getProductContextpath(), barcode);
 
-    HttpRequest<?> request =
-        HttpRequest.GET(url)
-            .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON);
+    HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url))
+                .header("Content-Type", "application/json")
+                .GET()
+                .build();
 
-    ProductResponse response = httpClient.toBlocking().retrieve(request, ProductResponse.class);
+    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
-    checkResponseStatus(response);
+    ObjectMapper objectMapper = new ObjectMapper();
+    ProductResponse productResponse = objectMapper.readValue(response.body(), ProductResponse.class);
 
-    return response;
+    checkResponseStatus(productResponse);
+
+    return productResponse;
   }
 
-  public KnowledgePanelsResponse getProductKnowledgePanelsByBarcode(String code) {
+  public KnowledgePanelsResponse getProductKnowledgePanelsByBarcode(String code) throws IOException, InterruptedException {
 
     String barcode = checkBarcode(code);
 
-    String url = String.format("%s/%s/%s.json?fields=%s", BASE_SEARCH_URL, PRODUCT, barcode, KNOWLEDGE_PANELS);
+    String url = String.format("%s/%s/%s.json?fields=%s", configurationManager.getBaseSearchUrl(), configurationManager.getProductContextpath(), barcode, configurationManager.getKnowledgePanels());
 
-    HttpRequest<?> request =
-            HttpRequest.GET(url)
-                    .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON);
+    HttpRequest request = HttpRequest.newBuilder()
+            .uri(URI.create(url))
+            .header("Content-Type", "application/json")
+            .GET()
+            .build();
 
-    KnowledgePanelsResponse response = httpClient.toBlocking().retrieve(request, KnowledgePanelsResponse.class);
+    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
-    checkResponseStatus(response);
+    ObjectMapper objectMapper = new ObjectMapper();
+    KnowledgePanelsResponse knowledgePanelsResponse = objectMapper.readValue(response.body(), KnowledgePanelsResponse.class);
 
-    return response;
+    checkResponseStatus(knowledgePanelsResponse);
+
+    return knowledgePanelsResponse;
   }
 
 
-  private <T extends AbstractProductResponse> void checkResponseStatus(T response) {
-    if (response.getStatus() == 0) {
-      throw new OpenFoodsFactsException(response.getStatusVerbose());
-    }
-  }
-
-
-  private String checkBarcode(String code) {
-    return Optional.ofNullable(code)
-            .orElseThrow(() -> new OpenFoodsFactsException("Barcode cannot be null"));
-  }
 }

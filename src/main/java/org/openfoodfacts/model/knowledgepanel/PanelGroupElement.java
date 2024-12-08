@@ -7,6 +7,7 @@ import java.util.List;
 
 @Data
 public class PanelGroupElement {
+
     private String title;
 
     @JsonProperty("panel_ids")

@@ -1,30 +1,29 @@
 package org.openfoodfacts.service.impl;
 
-import io.micronaut.http.client.HttpClient;
-import jakarta.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import org.openfoodfacts.client.OpenFoodFactsApiReadClient;
 import org.openfoodfacts.model.KnowledgePanelsResponse;
 import org.openfoodfacts.model.ProductResponse;
 import org.openfoodfacts.service.OpenFoodFactsWrapper;
 
+import java.io.IOException;
+
 @Slf4j
-@Singleton
 public final class OpenFoodFactsWrapperImpl implements OpenFoodFactsWrapper {
 
   private final OpenFoodFactsApiReadClient client;
 
-  public OpenFoodFactsWrapperImpl() {
-    this.client = new OpenFoodFactsApiReadClient(HttpClient.create(null));
+  public OpenFoodFactsWrapperImpl() throws IOException {
+    this.client = new OpenFoodFactsApiReadClient();
   }
 
   @Override
-  public ProductResponse fetchProductByBarcode(String code) {
+  public ProductResponse fetchProductByBarcode(String code) throws IOException, InterruptedException {
     return client.fetchProductByBarcode(code);
   }
 
   @Override
-  public KnowledgePanelsResponse getProductKnowledgePanelsByBarcode(String code) {
+  public KnowledgePanelsResponse getProductKnowledgePanelsByBarcode(String code) throws IOException, InterruptedException {
     return client.getProductKnowledgePanelsByBarcode(code);
   }
 

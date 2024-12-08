@@ -6,25 +6,16 @@
   <artifactId>openfoodfacts-java-wrapper</artifactId>
   <version>2.0.0-SNAPSHOT</version>
 
-  <parent>
-    <groupId>io.micronaut.platform</groupId>
-    <artifactId>micronaut-parent</artifactId>
-    <version>4.6.3</version>
-  </parent>
-
   <properties>
     <packaging>jar</packaging>
-    <exec.mainClass>org.openfoodfacts.Application</exec.mainClass>
-    <micronaut.runtime>netty</micronaut.runtime>
     <jdk.version>17</jdk.version>
     <release.version>17</release.version>
-    <micronaut.version>4.6.3</micronaut.version>
     <jackson.version>2.18.0</jackson.version>
-    <micronaut.validation.version>4.8.0</micronaut.validation.version>
-    <micronaut.jackson.version>4.7.1</micronaut.jackson.version>
-    <micronaut.openapi.version>6.13.0</micronaut.openapi.version>
     <lombok.version>1.18.26</lombok.version>
+    <logback.version>1.5.12</logback.version>
     <commons.lang.version>3.17.0</commons.lang.version>
+    <junit.version>5.11.3</junit.version>
+    <mockito.version>5.14.2</mockito.version>
     <jackson.databind.version>2.18.0</jackson.databind.version>
     <nexus.staging.version>1.6.10</nexus.staging.version>
     <maven.release.version>3.1.1</maven.release.version>
@@ -54,12 +45,6 @@
       <organization>openfoodsfacts</organization>
       <organizationUrl>https://github.com/openfoodfacts</organizationUrl>
     </developer>
-    <developer>
-      <name>Krzysztof Kozlowski</name>
-      <email>krzysztof.kozlowski@coderion.pl</email>
-      <organization>Coderion</organization>
-      <organizationUrl>http://www.coderion.pl</organizationUrl>
-    </developer>
   </developers>
 
   <distributionManagement>
@@ -85,86 +70,6 @@
   <dependencies>
 
     <dependency>
-      <groupId>io.micronaut</groupId>
-      <artifactId>micronaut-inject</artifactId>
-      <scope>compile</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>io.micronaut.validation</groupId>
-      <artifactId>micronaut-validation</artifactId>
-      <version>${micronaut.validation.version}</version>
-      <scope>runtime</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-api</artifactId>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-engine</artifactId>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>io.micronaut.test</groupId>
-      <artifactId>micronaut-test-junit5</artifactId>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.mockito</groupId>
-      <artifactId>mockito-core</artifactId>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>io.micronaut</groupId>
-      <artifactId>micronaut-http-client</artifactId>
-      <scope>compile</scope>
-      <exclusions>
-        <exclusion>
-          <groupId>org.apache.kafka</groupId>
-          <artifactId>kafka-clients</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-
-    <dependency>
-      <groupId>io.micronaut</groupId>
-      <artifactId>micronaut-http-server-netty</artifactId>
-      <scope>compile</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>io.micronaut</groupId>
-      <artifactId>micronaut-jackson-databind</artifactId>
-      <version>${micronaut.jackson.version}</version>
-      <scope>runtime</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>io.micronaut</groupId>
-      <artifactId>micronaut-runtime</artifactId>
-      <scope>compile</scope>
-      <exclusions>
-        <exclusion>
-          <groupId>org.apache.kafka</groupId>
-          <artifactId>kafka-clients</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-
-    <dependency>
-      <groupId>io.micronaut.openapi</groupId>
-      <artifactId>micronaut-openapi</artifactId>
-      <version>${micronaut.openapi.version}</version>
-    </dependency>
-
-    <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
       <version>${jackson.databind.version}</version>
@@ -173,12 +78,14 @@
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
+      <version>${logback.version}</version>
       <scope>runtime</scope>
     </dependency>
 
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
+      <version>${lombok.version}</version>
       <scope>provided</scope>
     </dependency>
 
@@ -201,18 +108,40 @@
       <scope>test</scope>
     </dependency>
 
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>2.0.16</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>${mockito.version}</version>
+      <scope>test</scope>
+    </dependency>
+
   </dependencies>
   <build>
     <plugins>
       <plugin>
-        <groupId>io.micronaut.maven</groupId>
-        <artifactId>micronaut-maven-plugin</artifactId>
-        <version>4.6.3</version>
-      </plugin>
-
-      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.13.0</version>
         <configuration>
 
           <annotationProcessorPaths combine.self="override">
@@ -221,21 +150,9 @@
               <artifactId>lombok</artifactId>
               <version>${lombok.version}</version>
             </path>
-            <path>
-              <groupId>io.micronaut</groupId>
-              <artifactId>micronaut-inject-java</artifactId>
-              <version>4.7.1</version>
-            </path>
-            <path>
-              <groupId>io.micronaut.validation</groupId>
-              <artifactId>micronaut-validation</artifactId>
-              <version>4.8.0</version>
-            </path>
           </annotationProcessorPaths>
-          <compilerArgs>
-            <arg>-Amicronaut.processing.group=org.openfoodfacts</arg>
-            <arg>-Amicronaut.processing.module=openfoodfacts-java-wrapper</arg>
-          </compilerArgs>
+          <source>11</source>
+          <target>11</target>
         </configuration>
       </plugin>
 
@@ -244,6 +161,18 @@
         <artifactId>maven-plugin-plugin</artifactId>
         <version>3.15.0</version>
       </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.5.2</version>
+        <configuration>
+          <includes>
+            <include>**/*Test.java</include>
+          </includes>
+        </configuration>
+      </plugin>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-gpg-plugin</artifactId>

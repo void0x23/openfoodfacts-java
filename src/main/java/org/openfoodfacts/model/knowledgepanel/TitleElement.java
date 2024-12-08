@@ -5,6 +5,8 @@ import lombok.Data;
 
 @Data
 public class TitleElement {
+
+    private String name;
     private String title;
     private String subtitle;
     private String grade;

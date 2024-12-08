@@ -2,6 +2,8 @@ package org.openfoodfacts.model.products;
 
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import lombok.Data;

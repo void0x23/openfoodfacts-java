@@ -5,6 +5,8 @@ import lombok.Data;
 
 @Data
 public class TableValue {
+
+    private String evaluation;
     private String text;
     private String percent;
 
