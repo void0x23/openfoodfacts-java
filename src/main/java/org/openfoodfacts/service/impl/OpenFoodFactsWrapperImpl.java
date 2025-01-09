@@ -7,6 +7,7 @@ import org.openfoodfacts.model.ProductResponse;
 import org.openfoodfacts.service.OpenFoodFactsWrapper;
 
 import java.io.IOException;
+import java.net.http.HttpClient;
 
 @Slf4j
 public final class OpenFoodFactsWrapperImpl implements OpenFoodFactsWrapper {
@@ -14,7 +15,7 @@ public final class OpenFoodFactsWrapperImpl implements OpenFoodFactsWrapper {
   private final OpenFoodFactsApiReadClient client;
 
   public OpenFoodFactsWrapperImpl() throws IOException {
-    this.client = new OpenFoodFactsApiReadClient();
+    this.client = new OpenFoodFactsApiReadClient(HttpClient.newHttpClient());
   }
 
   @Override

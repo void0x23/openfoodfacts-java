@@ -136,6 +136,7 @@
     </dependency>
 
   </dependencies>
+
   <build>
     <plugins>
       <plugin>
@@ -173,7 +174,7 @@
         </configuration>
       </plugin>
 
-      <plugin>
+   <!--   <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-gpg-plugin</artifactId>
         <version>3.2.7</version>
@@ -208,7 +209,7 @@
           <nexusUrl>https://oss.sonatype.org/</nexusUrl>
           <autoReleaseAfterClose>true</autoReleaseAfterClose>
         </configuration>
-      </plugin>
+      </plugin>-->
     </plugins>
   </build>
 

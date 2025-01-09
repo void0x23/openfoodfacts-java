@@ -1,10 +1,7 @@
-
 package org.openfoodfacts.service;
-
 
 import org.openfoodfacts.model.KnowledgePanelsResponse;
 import org.openfoodfacts.model.ProductResponse;
-
 import java.io.IOException;
 
 public interface OpenFoodFactsWrapper {

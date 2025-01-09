@@ -1,6 +1,5 @@
 package org.openfoodfacts.config;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -8,7 +7,7 @@ import java.util.Properties;
 public class ConfigurationManager {
 
     private static final String CONFIG_FILE = "application.properties";
-    private Properties properties;
+    private final Properties properties;
 
     public ConfigurationManager() throws IOException {
         this.properties = new Properties();
@@ -31,5 +30,9 @@ public class ConfigurationManager {
 
     public String getKnowledgePanels() {
         return properties.getProperty("openfoodfacts.url.fields.knowledge-panels");
+    }
+
+    public Integer getReadTimeout() {
+        return Integer.parseInt(properties.getProperty("read.timeout"));
     }
 }
